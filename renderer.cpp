@@ -47,6 +47,8 @@ Ray castRay(sf::Vector2f start, float angleInDegrees, const Map& map)
     size_t vdof = 0, hdof = 0;
     float vdist = std::numeric_limits<float>::max(), hdist = std::numeric_limits<float>::max();
 
+    sf::Color floor_color = map.getGrid()[1][1];
+
     sf::Vector2u vMapPos, hMapPos;
     sf::Vector2f vrayPos, hrayPos, offset;
 
@@ -74,7 +76,7 @@ Ray castRay(sf::Vector2f start, float angleInDegrees, const Map& map)
         int mapX = (int)(vrayPos.x / cellSize);
         int mapY = (int)(vrayPos.y / cellSize);
 
-        if (mapY < grid.size() && mapX < grid[mapY].size() && grid[mapY][mapX] != sf::Color::Black)
+        if (mapY < grid.size() && mapX < grid[mapY].size() && grid[mapY][mapX] != floor_color)
         {
             hit = true;
             vdist = std::sqrt((vrayPos.x - start.x) * (vrayPos.x - start.x) + 
@@ -109,7 +111,7 @@ Ray castRay(sf::Vector2f start, float angleInDegrees, const Map& map)
         int mapX = (int)(hrayPos.x / cellSize);
         int mapY = (int)(hrayPos.y / cellSize);
 
-        if (mapY < grid.size() && mapX < grid[mapY].size() && grid[mapY][mapX] != sf::Color::Black)
+        if (mapY < grid.size() && mapX < grid[mapY].size() && grid[mapY][mapX] != floor_color)
         {
             hit = true;
             hdist = std::sqrt((hrayPos.x - start.x) * (hrayPos.x - start.x) + 
@@ -126,14 +128,17 @@ Ray castRay(sf::Vector2f start, float angleInDegrees, const Map& map)
 
 void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const Map& map)
 {
+
+    sf::Color floor_color = map.getGrid()[1][1];
+
     // Drawing sky (just rectangle at half of the screen)
     sf::RectangleShape sky_floor(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT / 2.0f));
-    sky_floor.setFillColor(sf::Color(100, 170, 250));
+    sky_floor.setFillColor(sf::Color(135, 206, 235));
     target.draw(sky_floor);
 
     // Drawing floor
     sky_floor.setPosition(0.0f, SCREEN_HEIGHT / 2.0f);
-    sky_floor.setFillColor(sf::Color(70, 70, 70));
+    sky_floor.setFillColor(floor_color);
     target.draw(sky_floor);
 
     // Setting angles and DOF

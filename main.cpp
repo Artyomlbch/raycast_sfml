@@ -25,7 +25,7 @@ int main()
     //     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     // };
 
-    Map map(12.0f, "maps/map.png");
+    Map map(12.0f, "maps/map3.png");
 
     Player player;
     player.position = sf::Vector2f(50, 50);
