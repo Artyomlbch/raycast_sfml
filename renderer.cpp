@@ -136,6 +136,8 @@ void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const 
     sky_floor.setFillColor(sf::Color(135, 206, 235));
     target.draw(sky_floor);
 
+    const sf::Color fogColor = sf::Color(100, 206, 235);
+
     // Drawing floor
     sky_floor.setPosition(0.0f, SCREEN_HEIGHT / 2.0f);
     sky_floor.setFillColor(floor_color);
@@ -145,6 +147,8 @@ void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const 
     float angle = player.angle - player_FOV / 2.0f;
     const float angleIncrement = player_FOV / (float)NUM_RAYS;
     float maxRenderDistance = MAX_RAYCASTING_DEPTH * map.getCellSize();
+
+    const float maxFogDistance = maxRenderDistance / 2.0f;
 
     for (size_t i = 0; i < NUM_RAYS; ++i, angle += angleIncrement)
     {
@@ -170,8 +174,14 @@ void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const 
             column.setPosition(i * COLUMN_WIDTH, wallOffset);
 
             sf::Color color = map.getGrid()[ray.mapPosition.y][ray.mapPosition.x];
+            color = sf::Color(color.r * shade, color.g * shade, color.b * shade);
 
-            column.setFillColor(sf::Color(color.r * shade, color.g * shade, color.b * shade));
+            float fogPercentage = (ray.distance / maxFogDistance);
+            if (fogPercentage > 1.0f) { fogPercentage = 1.0f; }
+
+            column.setFillColor(sf::Color(color.r * (1.0f - fogPercentage) + fogColor.r * fogPercentage,
+                                          color.g * (1.0f - fogPercentage) + fogColor.g * fogPercentage,
+                                          color.b * (1.0f - fogPercentage) + fogColor.b * fogPercentage));
             target.draw(column);
         }           
     }

@@ -6,8 +6,8 @@
 #include "player.h"
 #include "map.h"
 
-constexpr const float SCREEN_WIDTH = 1200.0f;
-constexpr const float SCREEN_HEIGHT = 675.0f;
+constexpr const float SCREEN_WIDTH = 1280.0f;
+constexpr const float SCREEN_HEIGHT = 720.0f;
 
 class Renderer
 {
