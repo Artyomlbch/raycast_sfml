@@ -45,4 +45,11 @@ void Player::update(float deltaTime)
         position.x += cos(radians) * MOVE_SPEED * deltaTime;
         position.y += sin(radians) * MOVE_SPEED * deltaTime;
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        float radians = angle * PI / 180.0f;
+
+        position.x -= cos(radians) * MOVE_SPEED * deltaTime;
+        position.y -= sin(radians) * MOVE_SPEED * deltaTime;
+    }
 }
