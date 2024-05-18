@@ -14,13 +14,10 @@ constexpr const float SCREEN_HEIGHT = 720.0f;
 class Renderer
 {
 public:
-    void init();
     void drawRays(sf::RenderTarget& target, const Player& player, const Map& map);
     void draw3Dview(sf::RenderTarget& target, const Player& player, const Map& map);
 
 private:
-    sf::Texture wallTexture;
-    sf::Sprite wallSprite;
 
 };
 

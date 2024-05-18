@@ -22,23 +22,6 @@ struct Ray
 
 static Ray castRay(sf::Vector2f start, float angleInDegrees, const Map& map);
 
-void Renderer::init()
-{
-    if (!wallTexture.loadFromFile("textures/wallTexture.png"))
-    {
-        std::cerr << "ERROR: Failed to load Wall Texture." << std::endl; 
-        return;
-    }
-
-    if (wallTexture.getSize().x != wallTexture.getSize().y)
-    {
-        std::cerr << "ERROR: Texture is not square shape." << std::endl;
-        return;
-    }
-
-    wallSprite = sf::Sprite(wallTexture);
-}
-
 void Renderer::drawRays(sf::RenderTarget& target, const Player& player, const Map& map)
 {
     for (float angle = player.angle - player_FOV / 2; angle < player.angle + player_FOV / 2.0f; angle += 0.5f)
@@ -179,39 +162,26 @@ void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const 
 
             float wallHeight = (map.getCellSize() * SCREEN_HEIGHT) / ray.distance;
 
-            float wallOffset = SCREEN_HEIGHT / 2.0f - wallHeight / 2.0f;
-
-            wallSprite.setPosition(i * COLUMN_WIDTH, wallOffset);
-            wallSprite.setScale(COLUMN_WIDTH / wallTexture.getSize().x,
-                                wallHeight / wallTexture.getSize().y);
-
-            // if (wallHeight > SCREEN_HEIGHT)
-            // {
-            //     wallHeight = SCREEN_HEIGHT;
-            // }
-
             float brightness = 1.0f - (ray.distance / maxRenderDistance);
             if (brightness < 0.0f) brightness = 0.0f;
             float shade = (ray.isHitVertical ? 0.8f : 1.0f) * brightness; 
 
-            // sf::RectangleShape column(sf::Vector2f(COLUMN_WIDTH, wallHeight));
-            // column.setPosition(i * COLUMN_WIDTH, wallOffset);
+            float wallOffset = SCREEN_HEIGHT / 2.0f - wallHeight / 2.0f;
 
-            // sf::Color color = map.getGrid()[ray.mapPosition.y][ray.mapPosition.x];
-            // color = sf::Color(color.r * shade, color.g * shade, color.b * shade);
+            sf::RectangleShape column(sf::Vector2f(COLUMN_WIDTH, wallHeight));
+            column.setPosition(i * COLUMN_WIDTH, wallOffset);
 
-            // float fogPercentage = (ray.distance / maxFogDistance);
-            // if (fogPercentage > 1.0f) { fogPercentage = 1.0f; }
+            sf::Color color = map.getGrid()[ray.mapPosition.y][ray.mapPosition.x];
+            color = sf::Color(color.r * shade, color.g * shade, color.b * shade);
 
-            // column.setFillColor(sf::Color(color.r * (1.0f - fogPercentage) + fogColor.r * fogPercentage,
-            //                               color.g * (1.0f - fogPercentage) + fogColor.g * fogPercentage,
-            //                               color.b * (1.0f - fogPercentage) + fogColor.b * fogPercentage));
+            float fogPercentage = (ray.distance / maxFogDistance);
+            if (fogPercentage > 1.0f) { fogPercentage = 1.0f; }
 
-            wallSprite.setPosition(i * COLUMN_WIDTH, wallOffset);
-            wallSprite.setScale(COLUMN_WIDTH / wallTexture.getSize().x,
-                                wallHeight / wallTexture.getSize().y);
+            column.setFillColor(sf::Color(color.r * (1.0f - fogPercentage) + fogColor.r * fogPercentage,
+                                          color.g * (1.0f - fogPercentage) + fogColor.g * fogPercentage,
+                                          color.b * (1.0f - fogPercentage) + fogColor.b * fogPercentage));
 
-            target.draw(wallSprite);
+            target.draw(column);
         }           
     }
 }

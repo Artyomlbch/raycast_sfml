@@ -31,7 +31,6 @@ int main()
     player.position = sf::Vector2f(50, 50);
 
     Renderer renderer;
-    renderer.init();
     
     sf::Clock gameClock;
     while (window.isOpen())
