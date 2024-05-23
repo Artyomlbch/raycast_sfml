@@ -210,7 +210,7 @@ void Renderer::draw3Dview(sf::RenderTarget& target, const Player& player, const 
             fog_column.setPosition(i * COLUMN_WIDTH, wallOffset);
             fog_column.setScale(COLUMN_WIDTH, wallHeight);
 
-            fog_column.setFillColor(sf::Color(fogColor.r, fogColor.g, fogColor.b, fogPercentage * 255));
+            fog_column.setFillColor(sf::Color(fogColor.r, fogColor.g, fogColor.b, fogPercentage * 200));
             wallSprite.setColor(sf::Color(255 * shade, 255 * shade, 255 * shade));
 
             target.draw(wallSprite);
