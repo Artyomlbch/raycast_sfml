@@ -7,7 +7,7 @@
 constexpr float PI = 3.141592653589793f;
 constexpr size_t MAX_RAYCASTING_DEPTH = 32;
 constexpr float player_FOV = 60.0f;
-constexpr size_t NUM_RAYS = 600;
+constexpr size_t NUM_RAYS = 300;
 constexpr float COLUMN_WIDTH = SCREEN_WIDTH / (float)NUM_RAYS;
 
 struct Ray
