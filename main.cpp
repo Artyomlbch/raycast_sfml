@@ -54,9 +54,9 @@ int main()
 
         renderer.draw3Dview(window, player, map);
 
-        map.draw(window);
-        player.draw(window);
-        renderer.drawRays(window, player, map);
+        // map.draw(window);
+        // player.draw(window);
+        // renderer.drawRays(window, player, map);
 
         window.display();
     }
